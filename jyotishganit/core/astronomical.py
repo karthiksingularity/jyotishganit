@@ -11,6 +11,7 @@ import math
 from typing import Dict, List, Tuple
 from functools import lru_cache
 import platform
+import threading
 
 from skyfield.api import load, Loader, wgs84, Star
 from skyfield.data import hipparcos
@@ -57,30 +58,36 @@ loader = Loader(DATA_DIR, verbose=True)  # Verbose=True to see progress bars dur
 # Initialize astronomical objects with error handling
 _ts = None
 _eph = None
+_init_lock = threading.Lock()
 
 def _initialize_astronomical_data():
     """Initialize astronomical data with proper error handling."""
     global _ts, _eph
     
     if _ts is None or _eph is None:
-        try:
-            _ts = loader.timescale()
-            _eph = loader('de421.bsp')
-        except Exception as e:
-            raise RuntimeError(
-                f"Failed to initialize astronomical data. This usually happens on first run "
-                f"when downloading ephemeris files. Please ensure you have an internet "
-                f"connection and sufficient disk space (~10MB). Error: {e}"
-            ) from e
+        with _init_lock:
+            # Check again inside lock
+            if _ts is None or _eph is None:
+                try:
+                    _ts = loader.timescale()
+                    _eph = loader('de421.bsp')
+                except Exception as e:
+                    raise RuntimeError(
+                        f"Failed to initialize astronomical data. This usually happens on first run "
+                        f"when downloading ephemeris files. Please ensure you have an internet "
+                        f"connection and sufficient disk space (~10MB). Error: {e}"
+                    ) from e
 
 def get_timescale():
     """Get initialized timescale object."""
-    _initialize_astronomical_data()
+    if _ts is None:
+        _initialize_astronomical_data()
     return _ts
 
 def get_ephemeris():
     """Get initialized ephemeris object.""" 
-    _initialize_astronomical_data()
+    if _eph is None:
+        _initialize_astronomical_data()
     return _eph
 
 @lru_cache(maxsize=None)

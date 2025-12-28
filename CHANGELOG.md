@@ -7,7 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.1.2] - 2025-10-08
+## [0.1.2] - 2025-12-28
+
+### Added
+- Added support for Python 3.14 and removed support for Python 3.8
 
 ### Fixed
 - Fixed divisional chart ascendant d1HousePlacement calculation (was always showing 1, now correctly calculated)

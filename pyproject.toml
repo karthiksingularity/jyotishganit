@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "jyotishganit"
-version = "0.1.1"
+version = "0.1.2"
 authors = [
     {name = "NorthTara Research", email = "sid@northtara.ai"},
 ]
@@ -19,19 +19,20 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
     "Topic :: Scientific/Engineering :: Astronomy",
     "Topic :: Software Development :: Libraries :: Python Modules",
 ]
 keywords = ["astrology", "vedic", "jyotisha", "astronomy", "calculations", "birth-chart"]
 dependencies = [
-    "skyfield>=1.45",
-    "pandas>=1.3.0", 
-    "numpy>=1.20.0",
+    "skyfield>=1.48",
+    "pandas>=2.1.0", 
+    "numpy>=1.26.0",
 ]
 
 [project.optional-dependencies]
@@ -66,7 +67,7 @@ addopts = "--cov=jyotishganit --cov-report=html --cov-report=term-missing"
 
 [tool.black]
 line-length = 88
-target-version = ["py38"]
+target-version = ["py39"]
 include = '\.pyi?$'
 
 [tool.mypy]
